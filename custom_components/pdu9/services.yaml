@@ -1,0 +1,60 @@
+power_cycle:
+  target:
+    entity:
+      integration: pdu9
+      domain: switch
+  fields:
+    off_seconds:
+      required: false
+      default: 5
+      selector:
+        number:
+          min: 1
+          max: 600
+          unit_of_measurement: s
+          mode: box
+
+set_mode_delays:
+  target:
+    entity:
+      integration: pdu9
+      domain: sensor
+  fields:
+    mode:
+      required: true
+      selector:
+        select:
+          options:
+            - M1
+            - M2
+            - M3
+            - M4
+            - M5
+            - M6
+            - 开机
+            - 展厅
+    delays:
+      required: true
+      example: "[0, 2, 4, 6, 8, 10, -1, -1, -1]"
+      selector:
+        object:
+
+get_mode_delays:
+  target:
+    entity:
+      integration: pdu9
+      domain: sensor
+  fields:
+    mode:
+      required: true
+      selector:
+        select:
+          options:
+            - M1
+            - M2
+            - M3
+            - M4
+            - M5
+            - M6
+            - 开机
+            - 展厅

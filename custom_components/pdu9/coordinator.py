@@ -8,6 +8,7 @@ from datetime import timedelta
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import CONF_HOST
 from homeassistant.core import HomeAssistant
+from homeassistant.exceptions import HomeAssistantError
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, UpdateFailed
 
 from .client import PDU9Client, PDU9Error, async_discover
@@ -84,6 +85,35 @@ class PDU9Coordinator(DataUpdateCoordinator[DeviceStatus]):
             self.entry, data={**self.entry.data, CONF_HOST: match.host}
         )
         return True
+
+    async def async_write_basic_info(
+        self,
+        *,
+        serial_baud_code: int | None = None,
+        rs485_baud_code: int | None = None,
+        power_off_delay: int | None = None,
+    ) -> None:
+        """修改设备基本信息。
+
+        1.12 一次必须写全三个值，所以没指定的那些用设备当前值补齐——否则改一个
+        参数会把另外两个清成 0。写完客户端会回读，这里再通知实体刷新。
+        """
+        current = self.client.basic_info
+        if current is None:
+            raise HomeAssistantError("尚未读到设备的基本信息，请稍后再试")
+
+        await self.client.async_write_basic_info(
+            serial_baud_code=(
+                current.serial_baud_code if serial_baud_code is None else serial_baud_code
+            ),
+            rs485_baud_code=(
+                current.rs485_baud_code if rs485_baud_code is None else rs485_baud_code
+            ),
+            power_off_delay=(
+                current.power_off_delay if power_off_delay is None else power_off_delay
+            ),
+        )
+        self.async_update_listeners()
 
     def apply_optimistic_channel(self, channel_index: int, on: bool) -> None:
         """控制指令没有 ACK，先按用户意图更新 UI，下一轮轮询会纠正。"""

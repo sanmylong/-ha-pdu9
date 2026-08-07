@@ -24,3 +24,26 @@ MAX_SCAN_INTERVAL: Final = 60
 
 MANUFACTURER: Final = "UnitLink"
 MODEL: Final = "PDU-9"
+
+# ---- 服务 ----
+
+SERVICE_POWER_CYCLE: Final = "power_cycle"
+SERVICE_SET_MODE_DELAYS: Final = "set_mode_delays"
+SERVICE_GET_MODE_DELAYS: Final = "get_mode_delays"
+
+ATTR_OFF_SECONDS: Final = "off_seconds"
+ATTR_MODE: Final = "mode"
+ATTR_DELAYS: Final = "delays"
+
+DEFAULT_OFF_SECONDS: Final = 5
+MIN_OFF_SECONDS: Final = 1
+MAX_OFF_SECONDS: Final = 600
+
+# 服务里用 -1 表示"该路在此场景下不参与"，对应协议的 0xFFFF。
+# 用 -1 而不是直接写 65535，是因为后者容易被误当成一个超长延时。
+DELAY_OFF: Final = -1
+MAX_DELAY_SECONDS: Final = 65534
+
+# 延时关机时间（1.12/1.13），单位秒。
+MIN_POWER_OFF_DELAY: Final = 0
+MAX_POWER_OFF_DELAY: Final = 120

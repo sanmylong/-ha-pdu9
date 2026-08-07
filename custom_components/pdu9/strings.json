@@ -41,5 +41,71 @@
         }
       }
     }
+  },
+  "entity": {
+    "switch": {
+      "channel": {
+        "name": "通道 {number}"
+      }
+    },
+    "sensor": {
+      "mode": {
+        "name": "当前场景"
+      }
+    },
+    "binary_sensor": {
+      "switching": {
+        "name": "场景切换中"
+      }
+    },
+    "number": {
+      "power_off_delay": {
+        "name": "延时关机时间"
+      }
+    },
+    "select": {
+      "serial_baud": {
+        "name": "串口波特率"
+      },
+      "rs485_baud": {
+        "name": "485 波特率"
+      }
+    }
+  },
+  "services": {
+    "power_cycle": {
+      "name": "断电重启",
+      "description": "把指定通道断电若干秒后重新上电，用来重启接在这一路上的设备。一旦开始就一定会把电送回来。",
+      "fields": {
+        "off_seconds": {
+          "name": "断电时长",
+          "description": "保持断电的秒数，默认 5 秒。"
+        }
+      }
+    },
+    "set_mode_delays": {
+      "name": "写入场景延时",
+      "description": "设置某个场景下 9 路通道的延时动作时间（协议 1.10）。",
+      "fields": {
+        "mode": {
+          "name": "场景",
+          "description": "要配置的场景。"
+        },
+        "delays": {
+          "name": "延时列表",
+          "description": "9 个值，依次对应 CH1–CH9，单位秒；填 -1 表示该路在此场景下不参与。"
+        }
+      }
+    },
+    "get_mode_delays": {
+      "name": "读取场景延时",
+      "description": "读取某个场景下 9 路通道的延时动作时间（协议 1.11）。返回值里 -1 表示该路不参与。",
+      "fields": {
+        "mode": {
+          "name": "场景",
+          "description": "要读取的场景。"
+        }
+      }
+    }
   }
 }

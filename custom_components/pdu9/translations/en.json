@@ -41,5 +41,71 @@
         }
       }
     }
+  },
+  "entity": {
+    "switch": {
+      "channel": {
+        "name": "Channel {number}"
+      }
+    },
+    "sensor": {
+      "mode": {
+        "name": "Current scene"
+      }
+    },
+    "binary_sensor": {
+      "switching": {
+        "name": "Scene switching"
+      }
+    },
+    "number": {
+      "power_off_delay": {
+        "name": "Power-off delay"
+      }
+    },
+    "select": {
+      "serial_baud": {
+        "name": "Serial baud rate"
+      },
+      "rs485_baud": {
+        "name": "RS-485 baud rate"
+      }
+    }
+  },
+  "services": {
+    "power_cycle": {
+      "name": "Power cycle",
+      "description": "Cut power to a channel for a number of seconds, then switch it back on. Once started, power is always restored.",
+      "fields": {
+        "off_seconds": {
+          "name": "Off duration",
+          "description": "Seconds to stay powered off. Defaults to 5."
+        }
+      }
+    },
+    "set_mode_delays": {
+      "name": "Set scene delays",
+      "description": "Set the staggered switch-on delays for all 9 channels in a scene (protocol 1.10).",
+      "fields": {
+        "mode": {
+          "name": "Scene",
+          "description": "The scene to configure."
+        },
+        "delays": {
+          "name": "Delays",
+          "description": "Nine values for CH1-CH9 in seconds. Use -1 to leave a channel out of this scene."
+        }
+      }
+    },
+    "get_mode_delays": {
+      "name": "Get scene delays",
+      "description": "Read the staggered switch-on delays for all 9 channels in a scene (protocol 1.11). A value of -1 means the channel is not part of the scene.",
+      "fields": {
+        "mode": {
+          "name": "Scene",
+          "description": "The scene to read."
+        }
+      }
+    }
   }
 }

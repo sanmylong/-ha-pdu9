@@ -31,11 +31,11 @@ class PDU9SwitchingSensor(PDU9Entity, BinarySensorEntity):
     """
 
     _attr_device_class = BinarySensorDeviceClass.RUNNING
+    _attr_translation_key = "switching"
 
     def __init__(self, coordinator: PDU9Coordinator) -> None:
         """初始化。"""
         super().__init__(coordinator, "switching")
-        self._attr_name = "场景切换中"
 
     @property
     def is_on(self) -> bool | None:

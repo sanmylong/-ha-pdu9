@@ -98,6 +98,10 @@ MODE_LABELS: Final[dict[int, str]] = {
     Mode.OFF: "M6",
 }
 
+MODE_BY_LABEL: Final[dict[str, int]] = {
+    label: code for code, label in MODE_LABELS.items()
+}
+
 # 波特率档位码 → 实际波特率。写入时传的是档位码而不是波特率数值。
 BAUD_RATES: Final[dict[int, int]] = {
     1: 2400,
