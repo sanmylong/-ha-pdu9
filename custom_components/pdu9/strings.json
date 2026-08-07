@@ -1,0 +1,45 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "搜索 PDU-9 主机",
+        "description": "已在局域网中搜索到以下设备，请选择要添加的一台。",
+        "data": {
+          "host": "设备"
+        }
+      },
+      "manual": {
+        "title": "手动添加 PDU-9",
+        "description": "填写 PDU-9 主机的 IP 地址。控制端口默认为 1002。",
+        "data": {
+          "host": "IP 地址",
+          "port": "端口"
+        }
+      },
+      "discovery_confirm": {
+        "title": "发现 PDU-9 主机",
+        "description": "在局域网中发现了 {name}（{host}）。要添加它吗？"
+      }
+    },
+    "error": {
+      "cannot_connect": "无法连接该地址。请确认 IP 正确、设备已上电，且没有其他软件正在独占它。"
+    },
+    "abort": {
+      "already_configured": "该设备已经添加过了。",
+      "not_pdu9": "该设备不是 PDU-9 主机。"
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "PDU-9 选项",
+        "data": {
+          "scan_interval_seconds": "状态轮询间隔（秒）"
+        },
+        "data_description": {
+          "scan_interval_seconds": "设备每秒约能处理 40 个请求，默认 3 秒。"
+        }
+      }
+    }
+  }
+}

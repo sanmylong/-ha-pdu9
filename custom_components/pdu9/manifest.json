@@ -1,0 +1,18 @@
+{
+  "domain": "pdu9",
+  "name": "PDU-9 智能电源控制器",
+  "codeowners": [],
+  "config_flow": true,
+  "dependencies": ["network"],
+  "dhcp": [
+    {
+      "macaddress": "0008DC*"
+    }
+  ],
+  "documentation": "https://github.com/sanmylong/-ha-pdu9",
+  "integration_type": "device",
+  "iot_class": "local_polling",
+  "issue_tracker": "https://github.com/sanmylong/-ha-pdu9/issues",
+  "requirements": [],
+  "version": "1.0.0"
+}

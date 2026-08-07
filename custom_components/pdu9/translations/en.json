@@ -1,0 +1,45 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Search for PDU-9 hosts",
+        "description": "The following devices were found on the local network. Pick the one to add.",
+        "data": {
+          "host": "Device"
+        }
+      },
+      "manual": {
+        "title": "Add a PDU-9 manually",
+        "description": "Enter the IP address of the PDU-9 host. The control port defaults to 1002.",
+        "data": {
+          "host": "IP address",
+          "port": "Port"
+        }
+      },
+      "discovery_confirm": {
+        "title": "PDU-9 host discovered",
+        "description": "Found {name} ({host}) on the local network. Add it?"
+      }
+    },
+    "error": {
+      "cannot_connect": "Could not connect. Check the IP address, that the device is powered on, and that no other software is holding the connection."
+    },
+    "abort": {
+      "already_configured": "This device has already been added.",
+      "not_pdu9": "That device is not a PDU-9 host."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "PDU-9 options",
+        "data": {
+          "scan_interval_seconds": "Status poll interval (seconds)"
+        },
+        "data_description": {
+          "scan_interval_seconds": "The device handles about 40 requests per second. Default is 3 seconds."
+        }
+      }
+    }
+  }
+}
