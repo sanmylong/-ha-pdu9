@@ -21,12 +21,20 @@ from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from .client import PDU9Error
 from .const import (
     ATTR_DELAYS,
+    ATTR_DIRECTION,
+    ATTR_INTERVAL,
     ATTR_MODE,
     CHANNEL_COUNT,
+    DEFAULT_SEQUENCE_INTERVAL,
     DELAY_OFF,
+    DIRECTION_OFF,
+    DIRECTION_ON,
     DOMAIN,
     MAX_DELAY_SECONDS,
+    MAX_SEQUENCE_INTERVAL,
+    MIN_SEQUENCE_INTERVAL,
     SERVICE_GET_MODE_DELAYS,
+    SERVICE_RUN_SEQUENCE,
     SERVICE_SET_MODE_DELAYS,
 )
 from .coordinator import PDU9Coordinator
@@ -63,6 +71,17 @@ async def async_setup_entry(
         "async_get_mode_delays",
         supports_response=SupportsResponse.ONLY,
     )
+    platform.async_register_entity_service(
+        SERVICE_RUN_SEQUENCE,
+        {
+            vol.Required(ATTR_DIRECTION): vol.In([DIRECTION_ON, DIRECTION_OFF]),
+            vol.Optional(ATTR_INTERVAL, default=DEFAULT_SEQUENCE_INTERVAL): vol.All(
+                vol.Coerce(float),
+                vol.Range(min=MIN_SEQUENCE_INTERVAL, max=MAX_SEQUENCE_INTERVAL),
+            ),
+        },
+        "async_run_sequence",
+    )
 
 
 class PDU9ModeSensor(PDU9Entity, SensorEntity):
@@ -84,6 +103,18 @@ class PDU9ModeSensor(PDU9Entity, SensorEntity):
         if self.coordinator.data is None:
             return None
         return MODE_LABELS.get(self.coordinator.data.mode)
+
+    async def async_run_sequence(self, direction: str, interval: float) -> None:
+        """按顺序逐路开或关：开=CH1→CH9，关=CH9→CH1。"""
+        if self._switching:
+            raise HomeAssistantError("设备正在切换场景，请等当前切换完成")
+
+        try:
+            await self.coordinator.async_run_sequence(
+                direction == DIRECTION_ON, interval
+            )
+        except PDU9Error as err:
+            raise HomeAssistantError(f"顺序执行失败: {err}") from err
 
     async def async_set_mode_delays(self, mode: str, delays: list[int]) -> None:
         """1.10 写某个场景下 9 路的延时时间。"""

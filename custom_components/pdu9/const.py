@@ -30,10 +30,21 @@ MODEL: Final = "PDU-9"
 SERVICE_POWER_CYCLE: Final = "power_cycle"
 SERVICE_SET_MODE_DELAYS: Final = "set_mode_delays"
 SERVICE_GET_MODE_DELAYS: Final = "get_mode_delays"
+SERVICE_RUN_SEQUENCE: Final = "run_sequence"
 
 ATTR_OFF_SECONDS: Final = "off_seconds"
 ATTR_MODE: Final = "mode"
 ATTR_DELAYS: Final = "delays"
+ATTR_DIRECTION: Final = "direction"
+ATTR_INTERVAL: Final = "interval"
+
+DIRECTION_ON: Final = "on"
+DIRECTION_OFF: Final = "off"
+
+# 逐路开关的间隔。设备一次只处理一条指令，逐条发送并留间隔，顺序才是确定的。
+DEFAULT_SEQUENCE_INTERVAL: Final = 1.0
+MIN_SEQUENCE_INTERVAL: Final = 0.1
+MAX_SEQUENCE_INTERVAL: Final = 60.0
 
 DEFAULT_OFF_SECONDS: Final = 5
 MIN_OFF_SECONDS: Final = 1

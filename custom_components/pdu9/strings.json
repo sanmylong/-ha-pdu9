@@ -70,6 +70,14 @@
       "rs485_baud": {
         "name": "485 波特率"
       }
+    },
+    "button": {
+      "all_on": {
+        "name": "全开"
+      },
+      "all_off": {
+        "name": "全关"
+      }
     }
   },
   "services": {
@@ -104,6 +112,20 @@
         "mode": {
           "name": "场景",
           "description": "要读取的场景。"
+        }
+      }
+    },
+    "run_sequence": {
+      "name": "顺序开关",
+      "description": "按固定顺序逐路开或关：开=CH1→CH9，关=CH9→CH1。设备一次只处理一条指令，逐条发送并留间隔，顺序才是确定的。",
+      "fields": {
+        "direction": {
+          "name": "方向",
+          "description": "on 为逐路打开，off 为逐路关闭。"
+        },
+        "interval": {
+          "name": "间隔",
+          "description": "每一路之间等待的秒数，默认 1 秒。"
         }
       }
     }

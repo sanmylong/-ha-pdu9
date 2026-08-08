@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import asyncio
 import logging
 from datetime import timedelta
 
@@ -13,6 +14,7 @@ from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, Upda
 
 from .client import PDU9Client, PDU9Error, async_discover
 from .const import (
+    CHANNEL_COUNT,
     CONF_SCAN_INTERVAL_SECONDS,
     CONF_UUID,
     DEFAULT_SCAN_INTERVAL,
@@ -114,6 +116,26 @@ class PDU9Coordinator(DataUpdateCoordinator[DeviceStatus]):
             ),
         )
         self.async_update_listeners()
+
+    async def async_run_sequence(self, turn_on: bool, interval: float) -> None:
+        """按固定顺序逐路开或关：开=CH1→CH9，关=CH9→CH1。
+
+        必须逐条发、每条之间留间隔，顺序才是确定的。并行下发（比如 HA 区域卡片
+        一次性开关所有开关）会让 9 条指令挤在一起，设备一次只处理一条，实际动作
+        顺序就是随机的——这正是这个方法存在的原因。
+
+        中途某一路失败就整体中止，不继续往下发：与其留下一个开关参半又说不清
+        停在哪的状态，不如让用户看到错误。
+        """
+        order = (
+            range(CHANNEL_COUNT) if turn_on else range(CHANNEL_COUNT - 1, -1, -1)
+        )
+        for position, index in enumerate(order):
+            await self.client.async_set_channel(index, turn_on)
+            self.apply_optimistic_channel(index, turn_on)
+            if position < CHANNEL_COUNT - 1:
+                await asyncio.sleep(interval)
+        await self.async_request_refresh()
 
     def apply_optimistic_channel(self, channel_index: int, on: bool) -> None:
         """控制指令没有 ACK，先按用户意图更新 UI，下一轮轮询会纠正。"""

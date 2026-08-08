@@ -70,6 +70,14 @@
       "rs485_baud": {
         "name": "RS-485 baud rate"
       }
+    },
+    "button": {
+      "all_on": {
+        "name": "All on"
+      },
+      "all_off": {
+        "name": "All off"
+      }
     }
   },
   "services": {
@@ -104,6 +112,20 @@
         "mode": {
           "name": "Scene",
           "description": "The scene to read."
+        }
+      }
+    },
+    "run_sequence": {
+      "name": "Run sequence",
+      "description": "Switch all channels one by one in a fixed order: on = CH1 to CH9, off = CH9 to CH1. The device handles one command at a time, so commands must be sent one by one with a gap for the order to be deterministic.",
+      "fields": {
+        "direction": {
+          "name": "Direction",
+          "description": "on switches channels on one by one, off switches them off."
+        },
+        "interval": {
+          "name": "Interval",
+          "description": "Seconds to wait between channels. Defaults to 1."
         }
       }
     }
