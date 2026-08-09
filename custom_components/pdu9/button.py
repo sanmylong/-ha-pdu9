@@ -13,7 +13,12 @@ from homeassistant.exceptions import HomeAssistantError
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 
 from .client import PDU9Error
-from .const import DEFAULT_SEQUENCE_INTERVAL, DOMAIN
+from .const import (
+    DEFAULT_SEQUENCE_INTERVAL,
+    DOMAIN,
+    SUB_DEVICE_CHANNEL,
+    SUB_DEVICE_SCENE,
+)
 from .coordinator import PDU9Coordinator
 from .entity import PDU9Entity
 from .protocol import BUTTON_MODES
@@ -51,7 +56,11 @@ class PDU9SequenceButton(PDU9Entity, ButtonEntity):
 
     def __init__(self, coordinator: PDU9Coordinator, *, turn_on: bool) -> None:
         """初始化顺序按键。"""
-        super().__init__(coordinator, "all_on" if turn_on else "all_off")
+        super().__init__(
+            coordinator,
+            "all_on" if turn_on else "all_off",
+            sub_device=SUB_DEVICE_CHANNEL,
+        )
         self._turn_on = turn_on
         self._attr_translation_key = "all_on" if turn_on else "all_off"
         self._attr_icon = "mdi:progress-check" if turn_on else "mdi:progress-close"
@@ -75,7 +84,7 @@ class PDU9ModeButton(PDU9Entity, ButtonEntity):
 
     def __init__(self, coordinator: PDU9Coordinator, label: str, mode: int) -> None:
         """初始化场景按键。"""
-        super().__init__(coordinator, f"mode_{mode:02x}")
+        super().__init__(coordinator, f"mode_{mode:02x}", sub_device=SUB_DEVICE_SCENE)
         self._label = label
         self._mode = mode
         self._attr_name = label

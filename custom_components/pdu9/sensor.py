@@ -36,6 +36,7 @@ from .const import (
     SERVICE_GET_MODE_DELAYS,
     SERVICE_RUN_SEQUENCE,
     SERVICE_SET_MODE_DELAYS,
+    SUB_DEVICE_SCENE,
 )
 from .coordinator import PDU9Coordinator
 from .entity import PDU9Entity
@@ -95,7 +96,7 @@ class PDU9ModeSensor(PDU9Entity, SensorEntity):
 
     def __init__(self, coordinator: PDU9Coordinator) -> None:
         """初始化。"""
-        super().__init__(coordinator, "mode")
+        super().__init__(coordinator, "mode", sub_device=SUB_DEVICE_SCENE)
 
     @property
     def native_value(self) -> str | None:

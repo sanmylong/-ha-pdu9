@@ -10,7 +10,7 @@ from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 
-from .const import DOMAIN
+from .const import DOMAIN, SUB_DEVICE_SCENE
 from .coordinator import PDU9Coordinator
 from .entity import PDU9Entity
 
@@ -35,7 +35,7 @@ class PDU9SwitchingSensor(PDU9Entity, BinarySensorEntity):
 
     def __init__(self, coordinator: PDU9Coordinator) -> None:
         """初始化。"""
-        super().__init__(coordinator, "switching")
+        super().__init__(coordinator, "switching", sub_device=SUB_DEVICE_SCENE)
 
     @property
     def is_on(self) -> bool | None:

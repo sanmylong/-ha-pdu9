@@ -23,6 +23,7 @@ from .const import (
     MAX_OFF_SECONDS,
     MIN_OFF_SECONDS,
     SERVICE_POWER_CYCLE,
+    SUB_DEVICE_CHANNEL,
 )
 from .coordinator import PDU9Coordinator
 from .entity import PDU9Entity
@@ -57,7 +58,7 @@ class PDU9ChannelSwitch(PDU9Entity, SwitchEntity):
 
     def __init__(self, coordinator: PDU9Coordinator, index: int) -> None:
         """初始化通道开关。"""
-        super().__init__(coordinator, f"ch{index + 1}")
+        super().__init__(coordinator, f"ch{index + 1}", sub_device=SUB_DEVICE_CHANNEL)
         self._index = index
         self._attr_translation_placeholders = {"number": str(index + 1)}
 

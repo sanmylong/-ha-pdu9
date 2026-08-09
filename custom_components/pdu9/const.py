@@ -25,6 +25,20 @@ MAX_SCAN_INTERVAL: Final = 60
 MANUFACTURER: Final = "UnitLink"
 MODEL: Final = "PDU-9"
 
+# ---- 子设备 ----
+#
+# 一台 PDU-9 在 HA 里注册成三个设备：主设备放固件信息和参数配置，
+# 场景和通道各自成一个子设备（via_device 指向主设备）。这样在设备页
+# 「添加至仪表盘」时，拿到的卡片天然就是分开的——只用场景的场合不必
+# 面对 9 路通道开关。实体的 unique_id 不变，换归属不会改 entity_id。
+SUB_DEVICE_SCENE: Final = "scene"
+SUB_DEVICE_CHANNEL: Final = "channel"
+
+SUB_DEVICE_NAMES: Final[dict[str, str]] = {
+    SUB_DEVICE_SCENE: "场景",
+    SUB_DEVICE_CHANNEL: "通道",
+}
+
 # ---- 服务 ----
 
 SERVICE_POWER_CYCLE: Final = "power_cycle"
