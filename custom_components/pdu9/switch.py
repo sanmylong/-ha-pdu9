@@ -81,7 +81,21 @@ class PDU9ChannelSwitch(PDU9Entity, SwitchEntity):
 
         一旦开始就一定会把电送回来：断电和上电是一对，中途放弃会让设备停在
         断电状态，比不重启更糟。所以上电那步即使被取消也要执行完。
+
+        本来就关着的通道不做重启。那一路是用户主动关掉的，"重启"它等于擅自
+        把电送上去——对接在上面的设备来说这是通电而不是重启。桌面控制软件的
+        掉线重启逻辑也是这么处理的，两边保持一致。
         """
+        if self.is_on is None:
+            raise HomeAssistantError(
+                f"通道 {self._index + 1} 状态未知，无法重启"
+            )
+        if not self.is_on:
+            raise HomeAssistantError(
+                f"通道 {self._index + 1} 当前是关闭的，不执行重启"
+                "（重启会把它打开，而它是被主动关掉的）"
+            )
+
         await self._async_set(False)
         try:
             await asyncio.sleep(off_seconds)

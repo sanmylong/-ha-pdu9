@@ -73,8 +73,6 @@ MODE_NAMES: Final[dict[int, str]] = {
     Mode.OFF: "关机",
 }
 
-MODE_CODES: Final[dict[str, int]] = {name: code for code, name in MODE_NAMES.items()}
-
 # 界面上的场景按键。产品侧叫 M1–M6：M1–M5 对应 0x01–0x05，M6 就是关机(0xFF)。
 BUTTON_MODES: Final[dict[str, int]] = {
     "M1": Mode.HUIKE,
