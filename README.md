@@ -51,6 +51,68 @@
                                  /...
 ```
 
+## 仪表盘示例
+
+HA 不允许集成指定实体在自动生成界面里的排列顺序（它按域和名称排），想要固定
+顺序得自己配卡片。下面两张是实际在用的配置，把实体 ID 里的 `<设备>` 换成你自己
+的（在 开发者工具 → 状态 里查，形如 `pdu9dian_yuan_guan_li_qi`）。
+
+**场景模式**
+
+```yaml
+type: vertical-stack
+cards:
+  - type: entities
+    title: PDU9 场景状态
+    entities:
+      - entity: binary_sensor.<设备>_scene_switching
+        name: 执行状态
+      - entity: sensor.<设备>_current_scene
+        name: 当前模式
+  - type: grid
+    columns: 3
+    square: false
+    cards:
+      - { type: button, entity: button.<设备>_m1, name: M1, show_state: false, tap_action: { action: toggle } }
+      - { type: button, entity: button.<设备>_m2, name: M2, show_state: false, tap_action: { action: toggle } }
+      - { type: button, entity: button.<设备>_m3, name: M3, show_state: false, tap_action: { action: toggle } }
+      - { type: button, entity: button.<设备>_m4, name: M4, show_state: false, tap_action: { action: toggle } }
+      - { type: button, entity: button.<设备>_m5, name: M5, show_state: false, tap_action: { action: toggle } }
+      - { type: button, entity: button.<设备>_m6, name: M6, show_state: false, tap_action: { action: toggle } }
+```
+
+**通道控制**
+
+```yaml
+type: vertical-stack
+cards:
+  - type: grid
+    columns: 2
+    square: false
+    cards:
+      - { type: button, entity: button.<设备>_all_on, name: 全开, show_state: false, tap_action: { action: toggle } }
+      - { type: button, entity: button.<设备>_all_off, name: 全关, show_state: false, tap_action: { action: toggle } }
+  - type: entities
+    title: 通道控制
+    show_header_toggle: false
+    entities:
+      - { entity: switch.<设备>_channel_1, name: CH1 }
+      - { entity: switch.<设备>_channel_2, name: CH2 }
+      - { entity: switch.<设备>_channel_3, name: CH3 }
+      - { entity: switch.<设备>_channel_4, name: CH4 }
+      - { entity: switch.<设备>_channel_5, name: CH5 }
+      - { entity: switch.<设备>_channel_6, name: CH6 }
+      - { entity: switch.<设备>_channel_7, name: CH7 }
+      - { entity: switch.<设备>_channel_8, name: CH8 }
+      - { entity: switch.<设备>_channel_9, name: CH9 }
+```
+
+> `show_header_toggle: false` 不能省。实体卡片自带的那个一键开关是**并行**下发
+> 9 条指令的，而设备一次只处理一条，实际动作顺序会变成随机的——这正是「全开 /
+> 全关」按键要解决的问题，留着它等于在同一张卡上放一个行为相反的入口。
+>
+> `tap_action: { action: toggle }` 也不能省，否则点按键只会弹出详情对话框。
+
 ## 要求
 
 - Home Assistant 2024.12.0 或更高
